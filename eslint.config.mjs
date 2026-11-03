@@ -7,8 +7,11 @@ export default defineConfig([
   expoConfig,
   prettierConfig,
   {
+    rules: { 'no-console': 'error' },
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
-      'no-console': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
