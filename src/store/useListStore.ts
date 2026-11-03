@@ -122,6 +122,9 @@ let hydrationTask: Promise<void> | undefined;
 
 /** Compartilha a leitura entre montagens/re-renderizações e permite tentar novamente após erro. */
 export function hydrateListStore(): Promise<void> {
+  if (useListStore.getState().hydrationStatus === 'ready') {
+    return Promise.resolve();
+  }
   if (!hydrationTask) {
     hydrationTask = Promise.resolve(useListStore.persist.rehydrate()).finally(() => {
       hydrationTask = undefined;
