@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Lista de Compras Inteligente",
+    "slug": "lista-compras-inteligente",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.listacomprasinteligente"
+    },
+    "android": {
+      "package": "com.example.listacomprasinteligente",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "assetBundlePatterns": ["**/*"],
+    "plugins": []
+  }
+}
