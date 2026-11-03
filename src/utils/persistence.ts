@@ -1,6 +1,6 @@
 import { isSectionId } from '../constants/sections';
 import type { Item } from '../models/item';
-import { calculateItemTotalCents } from './totals';
+import { calculateItemTotalCents, calculateTotals } from './totals';
 import { isValidItemInput } from './validation';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -42,5 +42,8 @@ export function isPersistedItems(value: unknown): value is { items: Item[] } {
   }
 
   const items: Item[] = value.items;
-  return new Set(items.map((item) => item.id)).size === items.length;
+  return (
+    new Set(items.map((item) => item.id)).size === items.length &&
+    Number.isSafeInteger(calculateTotals(items).totalCents)
+  );
 }

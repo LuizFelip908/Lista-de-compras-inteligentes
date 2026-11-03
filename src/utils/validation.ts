@@ -19,7 +19,8 @@ export function isValidItemInput(input: ItemInput): boolean {
     Number.isSafeInteger(input.quantity) &&
     input.quantity >= 1 &&
     Number.isSafeInteger(input.unitPriceCents) &&
-    input.unitPriceCents >= 0
+    input.unitPriceCents >= 0 &&
+    Number.isSafeInteger(input.quantity * input.unitPriceCents)
   );
 }
 
@@ -40,6 +41,13 @@ export function validateItemForm(values: ItemFormValues): ItemValidationResult {
   }
   if (unitPriceCents === null) {
     errors.unitPrice = 'Informe um preço válido e não negativo, como 12,34.';
+  }
+  if (
+    quantity !== null &&
+    unitPriceCents !== null &&
+    !Number.isSafeInteger(quantity * unitPriceCents)
+  ) {
+    errors.unitPrice = 'O valor total do item excede o limite seguro de cálculo.';
   }
 
   if (

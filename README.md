@@ -152,12 +152,12 @@ Cobertura mínima implementada:
 - `store.test.ts`: adicionar, editar, excluir, alternar status, selector de totais, reidratação, loading, dados corrompidos, versão desconhecida, falha de leitura e falha/recuperação de gravação.
 - Testes adicionais: moeda pt-BR, validação, agrupamento, esquema persistido, wrapper de storage e interações reais da `HomeScreen` com Testing Library.
 
-Na validação desta entrega: **8 suítes e 112 testes passaram**. A cobertura da lógica/store/serviço ficou acima de 99% de linhas. Os mocks existem apenas no ambiente de teste; o app usa AsyncStorage e Haptics nativos.
+Na validação desta entrega: **8 suítes e 115 testes passaram**. A cobertura da lógica/store/serviço ficou acima de 99% de linhas. Os mocks existem apenas no ambiente de teste; o app usa AsyncStorage e Haptics nativos.
 
 ## Decisões técnicas
 
 1. **Totais derivados, nunca duplicados.** A store persiste apenas `items`. `selectTotals` chama a função pura `calculateTotals`; a tela usa `useShallow` para evitar re-renderizações por identidade de objeto. Alterar status não muda o total geral, apenas transfere o valor entre subtotais.
-2. **Dinheiro em centavos inteiros.** `unitPriceCents` evita erros clássicos de ponto flutuante. O parse aceita `12,34`, `12.34`, `12` e `R$ 12,34`, com até duas casas decimais e sem separador de milhar na entrada. A formatação é determinística em pt-BR: `R$ 1.234,56`.
+2. **Dinheiro em centavos inteiros.** `unitPriceCents` evita erros clássicos de ponto flutuante. O parse aceita `12,34`, `12.34`, `12` e `R$ 12,34`, com até duas casas decimais e sem separador de milhar na entrada. A formatação é determinística em pt-BR: `R$ 1.234,56`. Totais que ultrapassariam o limite seguro de inteiros são rejeitados na validação.
 3. **Reidratação sem flicker e sem perda silenciosa.** O `persist` usa `skipHydration: true`; a tela mostra carregamento até a leitura terminar. JSON/esquema inválido ou versão desconhecida entram em estado de erro com nova tentativa, sem sobrescrever o disco. Falha de gravação mantém a alteração em memória e exibe um aviso.
 4. **Separação de camadas.** Componentes apenas apresentam dados e disparam callbacks. Regras de negócio ficam em `utils/` e `store/`; o acesso nativo fica em `services/`.
 5. **Compatibilidade com Expo Go.** AsyncStorage foi fixado em 2.2.0, versão indicada pelo manifesto de módulos nativos do SDK 58, em vez de usar a versão mais nova do npm que poderia não corresponder ao binário do Expo Go.

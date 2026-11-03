@@ -33,6 +33,18 @@ describe('validateItemForm', () => {
     expect(validateItemForm({ ...validForm, unitPrice: '1,234' }).errors.unitPrice).toBeDefined();
   });
 
+  it('rejeita item cujo total ultrapassa o limite seguro de centavos', () => {
+    const result = validateItemForm({
+      ...validForm,
+      quantity: String(Number.MAX_SAFE_INTEGER),
+      unitPrice: '2',
+    });
+    expect(result.data).toBeNull();
+    expect(result.errors.unitPrice).toBe(
+      'O valor total do item excede o limite seguro de cálculo.',
+    );
+  });
+
   it('rejeita seção desconhecida mesmo se o tipo for contornado em tempo de execução', () => {
     const result = validateItemForm({
       ...validForm,
@@ -69,6 +81,7 @@ describe('isValidItemInput', () => {
     { unitPriceCents: -1 },
     { unitPriceCents: 1.5 },
     { unitPriceCents: Infinity },
+    { quantity: Number.MAX_SAFE_INTEGER, unitPriceCents: 2 },
     { sectionId: 'invalida' as ItemInput['sectionId'] },
   ])('rejeita entrada inválida: %s', (overrides) => {
     expect(isValidItemInput(createItemInput(overrides))).toBe(false);
